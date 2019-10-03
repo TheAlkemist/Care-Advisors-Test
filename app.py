@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from Data import AlienLanguage
 from log import setup_logging
+from string import punctuation
 
 app = Flask(__name__)
 
@@ -11,9 +12,11 @@ def index():
 
 @app.route('/translator/<statement>')
 def translate(statement):
-    logger = setup_logging('/Users/Christopher/PycharmProjects/Care-Advisors-Test/translation_app')
-    alien = AlienLanguage(logger)
-    #return render_template("translate.html")
+    #logger = setup_logging('/Users/Christopher/PycharmProjects/Care-Advisors-Test/translation_app')
+    alien = AlienLanguage()
+
+    if any(p in statement for p in punctuation):
+        string = "Invalid String"
     if statement.islower():
         dorbdorb = alien.english_to_dorbdorb(statement)
         gorbyoyo = alien.dorbdorb_to_gorbyoyo(dorbdorb)

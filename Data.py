@@ -9,16 +9,16 @@ db_pwd = "Ashes4567v"
 
 
 class AlienLanguage:
-    def __init__(self,logger):
-        self._logger = logger
+    def __init__(self):
+        #self._logger = logger
         self._db_conn = None
 
         try:
             self._db_conn = pg.connect(host=db_host, database=database, user=db_user, password=db_pwd)
-            self._logger.info('Successfully connected to the Database!')
+            #self._logger.info('Successfully connected to the Database!')
         except Exception as e:
-            self._logger.info('Connecting to the Database Failed!')
-            self._logger.error(e)
+            #self._logger.info('Connecting to the Database Failed!')
+            #self._logger.error(e)
             Exception('Connecting to the Database Failed!')
 
     def english_to_dorbdorb(self,english):
@@ -28,18 +28,18 @@ class AlienLanguage:
         return response.json()
 
     def dorbdorb_to_gorbyoyo(self,dorbdorb):
-        arr = dorbdorb
+        arr = dorbdorb #duplicate array
         lst2=[]
         for i in range(len(arr)):
             k=0
             dorbdorb = arr[i]
             for char in dorbdorb:
-                if char.isdigit():
+                if char.isdigit(): #count how many digits occur before alpha
                     k = k+1
                 else:
                     break
             if k == 2:
-                split = [0, 2, 3]
+                split = [0, 2, 3] #split string depending on how many digits appear before alpha
             elif k == 3:
                 split = [0, 3, 4]
             lst = [dorbdorb[i:j] for i, j in zip(split, split[1:] + [None])]
@@ -68,5 +68,16 @@ class AlienLanguage:
     def contacenate(self,gorbyoyo):
         for j in range(len(gorbyoyo)):
             result = "".join(gorbyoyo)
-        return result
+        try:
+            cursor = self._db_conn.cursor()
+            values = cursor.mogrify("(%s)", result).decode('utf-8')
+            cursor.execute('insert into translations values ' + values)
+            self._db_conn.commit()
+            self._logger.info('Successfully inserted translation %s into the Database.' % result)
+        except Exception as e:
+            self._logger.error(e)
+            self._db_conn.rollback()
+        finally:
+            cursor.close()
+            return result
 
