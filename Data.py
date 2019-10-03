@@ -63,7 +63,7 @@ class AlienLanguage:
         if message == "Success":
             return gorbyoyo
         elif message == "Invalid translation":
-            return "Failure"
+            return "Failed to Translate"
 
     def contacenate(self,gorbyoyo):
         for j in range(len(gorbyoyo)):
