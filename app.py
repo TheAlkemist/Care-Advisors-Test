@@ -12,12 +12,12 @@ def index():
 
 @app.route('/translator/<statement>')
 def translate(statement):
-    #logger = setup_logging('/Users/Christopher/PycharmProjects/Care-Advisors-Test/translation_app')
+    # logger = setup_logging('/Users/Christopher/PycharmProjects/Care-Advisors-Test/translation_app')
     alien = AlienLanguage()
 
-    if any(p in statement for p in punctuation):
+    if any(p in statement for p in punctuation):  # make sure no punctuation present in string
         string = "Invalid String"
-    if statement.islower():
+    if statement.islower():  # make sure string is all lowercase
         dorbdorb = alien.english_to_dorbdorb(statement)
         gorbyoyo = alien.dorbdorb_to_gorbyoyo(dorbdorb)
         verified_gorbyoyo = alien.verify_translation(gorbyoyo)

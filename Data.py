@@ -28,20 +28,17 @@ class AlienLanguage:
         return response.json()
 
     def dorbdorb_to_gorbyoyo(self,dorbdorb):
-        arr = dorbdorb #duplicate array
+        arr = dorbdorb  # copy array
         lst2=[]
         for i in range(len(arr)):
             k=0
             dorbdorb = arr[i]
             for char in dorbdorb:
-                if char.isdigit(): #count how many digits occur before alpha
+                if char.isdigit():  # count how many digits occur before alpha
                     k = k+1
                 else:
                     break
-            if k == 2:
-                split = [0, 2, 3] #split string depending on how many digits appear before alpha
-            elif k == 3:
-                split = [0, 3, 4]
+            split = [0, k, k+1]  # split string depending on how many digits appear before alpha
             lst = [dorbdorb[i:j] for i, j in zip(split, split[1:] + [None])]
             integer1 = [lst[0]]
             alpha = [lst[1]]
